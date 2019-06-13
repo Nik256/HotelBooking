@@ -36,4 +36,13 @@ public class HotelBookingRequest {
     public void setHotel(String hotel) {
         this.hotel = hotel;
     }
+
+    @Override
+    public String toString() {
+        return "HotelBookingRequest{" +
+                "id=" + id +
+                ", date=" + date +
+                ", hotel='" + hotel + '\'' +
+                '}';
+    }
 }
