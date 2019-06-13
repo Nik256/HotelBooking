@@ -27,7 +27,7 @@ public class Consumer implements Runnable {
                 Thread.sleep(5000);
             }
         } catch (InterruptedException e) {
-        logger.error(e.getMessage());
+        logger.error(e);
     }
     }
 }

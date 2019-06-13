@@ -34,7 +34,7 @@ public class Producer implements Runnable {
                 Thread.sleep(2000);
             }
         } catch (InterruptedException e) {
-            logger.error(e.getMessage());
+            logger.error(e);
         }
     }
 }
