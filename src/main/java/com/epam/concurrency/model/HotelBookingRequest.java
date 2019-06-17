@@ -1,4 +1,4 @@
-package com.epam.concurrency.pojo;
+package com.epam.concurrency.model;
 
 import java.time.LocalDate;
 

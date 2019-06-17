@@ -1,11 +1,20 @@
 package com.epam.concurrency.generator;
 
+import com.epam.concurrency.model.HotelBookingRequest;
+
 import java.time.LocalDate;
 import java.util.Random;
 
 public class RequestGenerator {
 
     private static final Random random = new Random();
+
+    public static HotelBookingRequest generate() {
+        return new HotelBookingRequest(
+                RequestGenerator.getRandomNumberInRange(0, 999),
+                RequestGenerator.getRandomLocalDate(),
+                RequestGenerator.getRandomString(10));
+    }
 
     public static LocalDate getRandomLocalDate() {
         long minDay = LocalDate.now().toEpochDay();

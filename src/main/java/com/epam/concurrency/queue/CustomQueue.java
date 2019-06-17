@@ -1,6 +1,6 @@
 package com.epam.concurrency.queue;
 
-import com.epam.concurrency.pojo.HotelBookingRequest;
+import com.epam.concurrency.model.HotelBookingRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,37 +17,19 @@ public class CustomQueue {
         this.capacity = capacity;
     }
 
-    public synchronized void put(HotelBookingRequest request) {
+    public synchronized void put(HotelBookingRequest request) throws InterruptedException {
         while (queue.size() == capacity) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-               logger.error(e);
-               Thread.currentThread().interrupt();
-            }
-        }
-        if(queue.isEmpty()) {
-            notifyAll();
+            wait();
         }
         queue.add(request);
+        notifyAll();
     }
 
-    public synchronized HotelBookingRequest take() {
+    public synchronized HotelBookingRequest take() throws InterruptedException {
         while (queue.isEmpty()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                logger.error(e);
-                Thread.currentThread().interrupt();
-            }
+            wait();
         }
-        if (queue.size() == capacity) {
-            notifyAll();
-        }
+        notifyAll();
         return queue.remove();
-    }
-
-    public synchronized int size() {
-        return queue.size();
     }
 }

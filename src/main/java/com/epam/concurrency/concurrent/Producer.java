@@ -1,7 +1,8 @@
 package com.epam.concurrency.concurrent;
 
+import com.epam.concurrency.counter.AtomicCounter;
 import com.epam.concurrency.generator.RequestGenerator;
-import com.epam.concurrency.pojo.HotelBookingRequest;
+import com.epam.concurrency.model.HotelBookingRequest;
 import com.epam.concurrency.queue.CustomQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,18 +17,17 @@ public class Producer implements Runnable {
 
     @Override
     public void run() {
-        HotelBookingRequest justProducedRequest = new HotelBookingRequest(
-                RequestGenerator.getRandomNumberInRange(0, 999),
-                RequestGenerator.getRandomLocalDate(),
-                RequestGenerator.getRandomString(10));
-        queue.put(justProducedRequest);
-        logger.info("--------- Producer #" + Thread.currentThread().getName() +
-                ": Produced resource " + justProducedRequest);
+        HotelBookingRequest justProducedRequest = RequestGenerator.generate();
         try {
+            queue.put(justProducedRequest);
+            logger.info("--------- Producer #" + Thread.currentThread().getName() +
+                    ": Produced resource " + justProducedRequest + " counter: ");
+            AtomicCounter.counter.incrementAndGet();
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             logger.error(e);
             Thread.currentThread().interrupt();
         }
     }
+
 }
