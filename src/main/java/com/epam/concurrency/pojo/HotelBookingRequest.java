@@ -13,30 +13,6 @@ public class HotelBookingRequest {
         this.hotel = hotel;
     }
 
-    public int getid() {
-        return id;
-    }
-
-    public void setid(int id) {
-        this.id = id;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(String hotel) {
-        this.hotel = hotel;
-    }
-
     @Override
     public String toString() {
         return "HotelBookingRequest{" +

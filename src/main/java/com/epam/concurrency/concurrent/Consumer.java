@@ -1,33 +1,28 @@
 package com.epam.concurrency.concurrent;
 
 import com.epam.concurrency.pojo.HotelBookingRequest;
+import com.epam.concurrency.queue.CustomQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.concurrent.BlockingQueue;
-
 public class Consumer implements Runnable {
-    private int id;
     private static final Logger logger = LogManager.getLogger(Consumer.class.getName());
-    private BlockingQueue<HotelBookingRequest> queue;
+    private CustomQueue queue;
 
-    public Consumer(BlockingQueue<HotelBookingRequest> queue, int id) {
+    public Consumer(CustomQueue queue) {
         this.queue = queue;
-        this.id = id;
     }
 
     @Override
     public void run() {
+        HotelBookingRequest request = queue.take();
+        logger.info("//////////////////// Consumer #" + Thread.currentThread().getName() +
+                ": Consumed resource " + request);
         try {
-            while (true) {
-                HotelBookingRequest request = queue.take();
-                logger.info("//////////////////// Consumer #" + id +
-                        ": Consumed resource " + request +
-                        " - Queue size now = "  + queue.size());
-                Thread.sleep(5000);
-            }
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
-        logger.error(e);
-    }
+            logger.error(e);
+            Thread.currentThread().interrupt();
+        }
     }
 }

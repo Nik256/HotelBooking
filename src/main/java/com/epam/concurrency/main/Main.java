@@ -2,28 +2,28 @@ package com.epam.concurrency.main;
 
 import com.epam.concurrency.concurrent.Consumer;
 import com.epam.concurrency.concurrent.Producer;
-import com.epam.concurrency.pojo.HotelBookingRequest;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.epam.concurrency.queue.CustomQueue;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
 
 public class Main {
-    private static final Logger logger = LogManager.getLogger(Main.class.getName());
+    private static final int QUEUE_CAPACITY = 5;
+    private static final int NUMBER_OF_REQUESTS = 15;
+    private static final int NUMBER_OF_PRODUCERS = 3;
+    private static final int NUMBER_OF_CONSUMERS = 6;
 
     public static void main(String[] args) {
-        int numProducers = 3;
-        int numConsumers = 6;
+        CustomQueue queue = new CustomQueue(QUEUE_CAPACITY);
 
-        BlockingQueue myQueue = new LinkedBlockingQueue<HotelBookingRequest>(5);
+        ExecutorService producerExecutorService = Executors.newFixedThreadPool(NUMBER_OF_PRODUCERS);
+        ExecutorService consumerExecutorService = Executors.newFixedThreadPool(NUMBER_OF_CONSUMERS);
 
-        for (int i = 0; i < numProducers; i++){
-            new Thread(new Producer(myQueue, i)).start();
-        }
+        IntStream.range(0, NUMBER_OF_REQUESTS).forEach(i -> producerExecutorService.submit(new Producer(queue)));
+        IntStream.range(0, NUMBER_OF_REQUESTS).forEach(i -> consumerExecutorService.submit(new Consumer(queue)));
 
-        for (int i = 0; i < numConsumers; i++){
-            new Thread(new Consumer(myQueue, i)).start();
-        }
+        producerExecutorService.shutdown();
+        consumerExecutorService.shutdown();
     }
 }
