@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,21 +25,18 @@ class HotelBookingTest {
     @BeforeEach
     void setUp() {
         queue = new CustomQueue(5);
-        producerExecutorService = Executors.newFixedThreadPool(3);
-        consumerExecutorService = Executors.newFixedThreadPool(6);
-    }
-
-    @AfterEach
-    void tearDown() {
-        producerExecutorService.shutdown();
-        consumerExecutorService.shutdown();
     }
 
     @Test
     void testProducerGenerationOfRequests() throws InterruptedException {
+        producerExecutorService = Executors.newFixedThreadPool(3);
+        consumerExecutorService = Executors.newFixedThreadPool(6);
         IntStream.range(0, 15).forEach(i -> producerExecutorService.submit(new Producer(queue)));
         IntStream.range(0, 15).forEach(i -> consumerExecutorService.submit(new Consumer(queue)));
-        Thread.sleep(10000);
+        producerExecutorService.shutdown();
+        consumerExecutorService.shutdown();
+        producerExecutorService.awaitTermination(30, TimeUnit.SECONDS);
+        consumerExecutorService.awaitTermination(30, TimeUnit.SECONDS);
         assertEquals(15, AtomicCounter.counter.get());
     }
 
