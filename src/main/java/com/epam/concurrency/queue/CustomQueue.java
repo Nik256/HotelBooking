@@ -1,5 +1,6 @@
 package com.epam.concurrency.queue;
 
+import com.epam.concurrency.counter.AtomicCounter;
 import com.epam.concurrency.model.HotelBookingRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +27,7 @@ public class CustomQueue {
     }
 
     public synchronized HotelBookingRequest take() throws InterruptedException {
-        while (queue.isEmpty()) {
+        while (queue.isEmpty() && AtomicCounter.isMoreRequests()) {
             wait();
         }
         notifyAll();

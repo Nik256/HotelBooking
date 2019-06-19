@@ -21,7 +21,7 @@ public class Main {
         ExecutorService consumerExecutorService = Executors.newFixedThreadPool(NUMBER_OF_CONSUMERS);
 
         IntStream.range(0, NUMBER_OF_REQUESTS).forEach(i -> producerExecutorService.submit(new Producer(queue)));
-        IntStream.range(0, NUMBER_OF_REQUESTS).forEach(i -> consumerExecutorService.submit(new Consumer(queue)));
+        IntStream.range(0, NUMBER_OF_CONSUMERS).forEach(i -> consumerExecutorService.submit(new Consumer(queue)));
 
         producerExecutorService.shutdown();
         consumerExecutorService.shutdown();

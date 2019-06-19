@@ -21,8 +21,7 @@ public class Producer implements Runnable {
         try {
             queue.put(justProducedRequest);
             logger.info("--------- Producer #" + Thread.currentThread().getName() +
-                    ": Produced resource " + justProducedRequest + " counter: ");
-            AtomicCounter.counter.incrementAndGet();
+                    ": Produced resource " + justProducedRequest);
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             logger.error(e);
