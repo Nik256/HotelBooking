@@ -1,6 +1,5 @@
 package com.epam.concurrency.concurrent;
 
-import com.epam.concurrency.counter.AtomicCounter;
 import com.epam.concurrency.generator.RequestGenerator;
 import com.epam.concurrency.model.HotelBookingRequest;
 import com.epam.concurrency.queue.CustomQueue;

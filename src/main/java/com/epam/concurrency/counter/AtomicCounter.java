@@ -3,8 +3,12 @@ package com.epam.concurrency.counter;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AtomicCounter {
-    private static final int MAX_NUMBER_OF_REQUESTS = 15;
+    private static int maxNumberOfRequests;
     private static AtomicInteger count = new AtomicInteger();
+
+    public static void setMaxNumberOfRequests(int maxNumberOfRequests) {
+        AtomicCounter.maxNumberOfRequests = maxNumberOfRequests;
+    }
 
     public static void inc() {
         boolean updated = false;
@@ -19,6 +23,6 @@ public class AtomicCounter {
     }
 
     public static boolean isMoreRequests() {
-        return count.get() < MAX_NUMBER_OF_REQUESTS;
+        return count.get() < maxNumberOfRequests;
     }
 }

@@ -17,7 +17,7 @@ public class Consumer implements Runnable {
     @Override
     public void run() {
         try {
-            while (AtomicCounter.count() < 15) {
+            while (AtomicCounter.isMoreRequests()) {
                 HotelBookingRequest request = queue.take();
                 AtomicCounter.inc();
                 logger.info("//////////////////// Consumer #" + Thread.currentThread().getName() +

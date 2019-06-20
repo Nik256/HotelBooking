@@ -2,6 +2,7 @@ package com.epam.concurrency.main;
 
 import com.epam.concurrency.concurrent.Consumer;
 import com.epam.concurrency.concurrent.Producer;
+import com.epam.concurrency.counter.AtomicCounter;
 import com.epam.concurrency.queue.CustomQueue;
 
 import java.util.concurrent.ExecutorService;
@@ -16,6 +17,8 @@ public class Main {
 
     public static void main(String[] args) {
         CustomQueue queue = new CustomQueue(QUEUE_CAPACITY);
+
+        AtomicCounter.setMaxNumberOfRequests(NUMBER_OF_REQUESTS);
 
         ExecutorService producerExecutorService = Executors.newFixedThreadPool(NUMBER_OF_PRODUCERS);
         ExecutorService consumerExecutorService = Executors.newFixedThreadPool(NUMBER_OF_CONSUMERS);
