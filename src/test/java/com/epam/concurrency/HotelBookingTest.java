@@ -28,6 +28,7 @@ class HotelBookingTest {
 
     @Test
     void testProducerGenerationOfRequests() throws InterruptedException {
+        AtomicCounter.setMaxNumberOfRequests(15);
         producerExecutorService = Executors.newFixedThreadPool(3);
         consumerExecutorService = Executors.newFixedThreadPool(6);
         IntStream.range(0, 15).forEach(i -> producerExecutorService.submit(new Producer(queue)));
